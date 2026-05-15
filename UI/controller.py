@@ -29,6 +29,14 @@ class Controller:
             self._view.update_page()
             return
 
+        if year > 2016 or year < 1816:
+            self._view._txt_result.controls.clear()
+            self._view._txt_result.controls.append(
+                ft.Text(f"Attenzione, inserire un valore  compreso tra il 1816 e il 2016.", color="red")
+            )
+            self._view.update_page()
+            return
+
         self._model.buildGraph(year)
         self._view._txt_result.controls.clear()
         self._view._txt_result.controls.append(ft.Text("Grafo correttamente creato."))
@@ -40,5 +48,36 @@ class Controller:
                 ft.Text(f"{c[0]} -- {c[1]} vicini")
             )
         self._view.update_page()
+
+        self._view._ddSelezioneStato.disabled = False
+        self._view._btnRaggiungibili.disabled = False
+        allNodes = self._model.getAllNodes()
+        self._fillDdSelezioneStato(allNodes)
+        self._view.update_page()
+
+
+    def _fillDdSelezioneStato(self, allNodes):
+        for n in allNodes:
+            self._view._ddSelezioneStato.options.append(
+                ft.dropdown.Option(
+                    data = self._model._idMapBo.get(n, n),
+                    key = n,
+                )
+            )
+
+    def handleRicerca(self, e):
+        stato = self._view._ddSelezioneStato.value
+
+        nodiR = self._model.getNodiRaggiungibili(stato)
+        self._view._txt_result.controls.clear()
+        self._view._txt_result.controls.append(
+            ft.Text(f"Nodi raggiungibili dal nodo {self._model._idMapBo[stato]}:")
+        )
+        for n in nodiR:
+            self._view._txt_result.controls.append(
+                ft.Text(self._model._idMapBo.get(n, n))
+            )
+        self._view.update_page()
+
 
 

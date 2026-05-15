@@ -21,14 +21,29 @@ class View(ft.UserControl):
         self._title = ft.Text("Country Borders", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        #ROW with controls
+        #ROW 1
         self._txtAnno = ft.TextField(label="Anno")
         self._btnCalcola = ft.ElevatedButton(text="Calcola Confini", on_click=self._controller.handleCalcola)
-        row1 = ft.Row([self._txtAnno, self._btnCalcola], alignment=ft.MainAxisAlignment.CENTER)
-        self._page.controls.append(row1)
+        row1 = ft.Row([ft.Container(None, width=250),
+                       ft.Container(self._txtAnno, width=250),
+                       ft.Container(self._btnCalcola, width=250)])
+
+        #ROW 2
+        self._ddSelezioneStato = ft.Dropdown(label="Seleziona Stato",
+                                             disabled=True,)
+        self._btnRaggiungibili = ft.ElevatedButton(
+            text="Stati Raggiungibili",
+            on_click=self._controller.handleRicerca,
+        disabled=True,)
+
+        row2 = ft.Row([ft.Container(None, width=250),
+                       ft.Container(self._ddSelezioneStato, width = 250),
+                       ft.Container(self._btnRaggiungibili, width = 250)])
+
+
         # List View where the reply is printed
         self._txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
-        self._page.controls.append(self._txt_result)
+        self._page.add(row1, row2, self._txt_result)
         self._page.update()
 
     @property

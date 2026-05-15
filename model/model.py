@@ -20,6 +20,7 @@ class Model:
             for b in self._allBorders:
 
                 self._idMapBo[b.state1ab] = b.state1nm
+                self._idMapBo[b.state2ab] = b.state2nm
 
                 self._graph.add_node(b.state1ab)
                 self._graph.add_node(b.state2ab)
@@ -39,6 +40,15 @@ class Model:
             countries.append((name, neigh))
         order_countries = sorted(countries, key=lambda x: x[0])
         return order_countries
+
+    def getNodiRaggiungibili(self, statoab):
+        dfsTree = list(self._graph.neighbors(statoab))
+        return dfsTree
+
+    def getAllNodes(self):
+        nodes = list(self._graph.nodes)
+        return nodes
+
 
     def get_numNodi(self):
         return len(self._graph.nodes)

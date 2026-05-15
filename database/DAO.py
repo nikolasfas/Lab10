@@ -11,10 +11,11 @@ class DAO():
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = """select state1ab, c2.StateNme as state1nm, state2ab, c.year, conttype
-                        from contiguity c, country c2 
-                        where c.state1ab = c2.StateAbb 
-                        and`year` <= %s"""
+        query = """select c.state1ab, c1.StateNme as state1nm, c.state2ab, c2.StateNme as state2nm, c.year, c.conttype
+                    from contiguity c, country c1, country c2
+                    where c.state1ab = c1.StateAbb
+                    and c.state2ab = c2.StateAbb
+                    and c.year <= %s"""
 
         cursor.execute(query, (year,))
 
